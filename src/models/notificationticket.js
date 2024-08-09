@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM,
         allowNull: false,
         values: ["PENDING", "SUCCESS", "FAILED"],
+        defaultValue: "PENDING"
+
       },
       notificationTime: {
         type: DataTypes.DATE,

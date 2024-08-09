@@ -3,14 +3,18 @@ const bodyParser = require("body-parser");
 const cron = require("node-cron");
 const { PORT } = require("./config/server-config");
 const { sendBasicEmail } = require("./services/email-service");
+const jobs = require('./utils/job')
+const TicketController = require('./controller/ticket-controller')
 
 const setupAndStartServer = () => {
   const app = express();
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.post('/api/v1/tickets',TicketController.create)
 
   app.listen(PORT, (req, res) => {
     console.log(`server running at ${PORT}`);
+    jobs();
     // sendBasicEmail(
     //   "support@gmail.com",
     //   "kotadiyachaitanya@gmail.com",
@@ -19,15 +23,7 @@ const setupAndStartServer = () => {
     // );
 
 //scedular mail after every 10 second
-    cron.schedule("*/5 * * * * *", () => {
-      console.log("running a task every two minutes");
-      sendBasicEmail(
-        "support@gmail.com",
-        "tyson83477@gmail.com",
-        "TESTING EMAIL",
-        "topa topa topa "
-      );
-    });
+   
   });
 };
 
